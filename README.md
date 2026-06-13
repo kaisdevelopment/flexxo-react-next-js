@@ -42,19 +42,19 @@ Capacitar o aluno a construir aplicações front-end modernas e profissionais ut
 
 ---
 
-### Aula 02 — Next.js: App Router, Rotas e Server Components
+### Aula 02 — Next.js: App Router, Server Components e Rotas Dinâmicas
 
 | # | Tópico | Duração |
 |---|--------|---------|
 | 1 | O que é Next.js e por que usar sobre o React puro | 20min |
-| 2 | App Router: estrutura de pastas como rotas | 40min |
-| 3 | Server Components vs Client Components | 40min |
-| 4 | Rotas dinâmicas e parâmetros | 30min |
-| 5 | API Routes: criando endpoints no Next.js | 30min |
-| 6 | Fetch de dados e loading states | 30min |
-| 7 | **Projeto Prático:** Dashboard com Next.js | 30min |
+| 2 | Criando o projeto Next.js e entendendo a estrutura | 30min |
+| 3 | App Router: estrutura de pastas como rotas | 40min |
+| 4 | Server Components vs Client Components (`use client`) | 40min |
+| 5 | Rotas dinâmicas: `/servidor/[id]` | 30min |
+| 6 | API Routes: criando endpoints no Next.js | 30min |
+| 7 | **Projeto Prático:** Dashboard migrado para Next.js | 30min |
 
-📄 Material da Aula 02 *(em breve)*
+📄 [Material completo da Aula 02](./aulas/aula-02-nextjs-app-router.md)
 
 ---
 
@@ -85,8 +85,9 @@ Ao longo das 3 aulas, construímos um **Dashboard de Monitoramento de Servidores
 - ✅ Ordenação por consumo de CPU
 - ✅ Cards de resumo com contadores
 - ✅ Interface dark mode profissional
-- 🔲 Rotas dinâmicas por servidor (Aula 02)
-- 🔲 API Routes com dados do backend (Aula 02)
+- ✅ Migração para Next.js com App Router (Aula 02)
+- ✅ Rotas dinâmicas por servidor (Aula 02)
+- ✅ API Routes com dados do backend (Aula 02)
 - 🔲 Estilização com Tailwind CSS (Aula 03)
 - 🔲 Integração com API Laravel (Aula 03)
 - 🔲 Deploy na Vercel (Aula 03)
@@ -95,19 +96,22 @@ Ao longo das 3 aulas, construímos um **Dashboard de Monitoramento de Servidores
 
 ## 🚀 Como Rodar o Projeto
 
+### Versão React Puro (Aula 01)
+
 ```bash
-# Clonar o repositório
-git clone git@github.com:kaisdevelopment/flexxo-react-next-js.git
-cd flexxo-react-next-js
-
-# Instalar dependências
+cd react-dashboard
 npm install
-
-# Rodar em desenvolvimento
 npm run dev
+# Acesse: http://localhost:5173
+```
 
-# Acessar
-# http://localhost:5173
+### Versão Next.js (Aula 02+)
+
+```bash
+cd next-dashboard
+npm install
+npm run dev
+# Acesse: http://localhost:3000
 ```
 
 ---
@@ -116,26 +120,49 @@ npm run dev
 
 ```
 flexxo-react-next-js/
-├── README.md                          ← Este arquivo
+├── README.md
 ├── aulas/
-│   ├── aula-01-js-moderno-react.md    ← Material da Aula 01
-│   ├── aula-02-nextjs.md              ← (em breve)
+│   ├── aula-01-js-moderno-react.md
+│   ├── aula-02-nextjs-app-router.md
 │   └── aula-03-deploy.md              ← (em breve)
-├── src/
-│   ├── App.jsx
-│   ├── main.jsx
-│   ├── index.css
-│   ├── data/
-│   │   └── servidores.js
-│   └── components/
-│       ├── Header.jsx
-│       ├── Footer.jsx
-│       ├── ResumoCards.jsx
-│       ├── StatusFilter.jsx
-│       ├── SearchBar.jsx
-│       ├── ServerCard.jsx
-│       └── OrderCpu.jsx
-└── package.json
+├── react-dashboard/                    ← Projeto Aula 01 (Vite + React)
+│   ├── src/
+│   │   ├── App.jsx
+│   │   ├── main.jsx
+│   │   ├── index.css
+│   │   ├── data/
+│   │   │   └── servidores.js
+│   │   └── components/
+│   │       ├── Header.jsx
+│   │       ├── Footer.jsx
+│   │       ├── ResumoCards.jsx
+│   │       ├── StatusFilter.jsx
+│   │       ├── SearchBar.jsx
+│   │       ├── ServerCard.jsx
+│   │       └── OrderCpu.jsx
+│   └── package.json
+└── next-dashboard/                     ← Projeto Aula 02+ (Next.js)
+    ├── app/
+    │   ├── layout.jsx
+    │   ├── page.jsx
+    │   ├── globals.css
+    │   ├── servidor/
+    │   │   └── [id]/
+    │   │       └── page.jsx
+    │   └── api/
+    │       └── servidores/
+    │           └── route.js
+    ├── components/
+    │   ├── Header.jsx
+    │   ├── Footer.jsx
+    │   ├── ResumoCards.jsx
+    │   ├── StatusFilter.jsx
+    │   ├── SearchBar.jsx
+    │   ├── ServerCard.jsx
+    │   └── OrderCpu.jsx
+    ├── data/
+    │   └── servidores.js
+    └── package.json
 ```
 
 ---
