@@ -42,23 +42,25 @@ Capacitar o aluno a construir aplicações front-end modernas e profissionais ut
 
 ---
 
-### Aula 02 — Next.js: App Router, Server Components e Rotas Dinâmicas
+### Aula 02 — Next.js: App Router, Server Components, API Routes e Middleware
 
 | # | Tópico | Duração |
 |---|--------|---------|
 | 1 | O que é Next.js e por que usar sobre o React puro | 20min |
 | 2 | Criando o projeto Next.js e entendendo a estrutura | 30min |
-| 3 | App Router: estrutura de pastas como rotas | 40min |
-| 4 | Server Components vs Client Components (`use client`) | 40min |
-| 5 | Rotas dinâmicas: `/servidor/[id]` | 30min |
-| 6 | API Routes: criando endpoints no Next.js | 30min |
-| 7 | **Projeto Prático:** Dashboard migrado para Next.js | 30min |
+| 3 | App Router: estrutura de pastas como rotas | 30min |
+| 4 | Server Components vs Client Components (`use client`) | 30min |
+| 5 | Rotas dinâmicas: `/servidor/[id]` | 20min |
+| 6 | API Routes: GET, POST, sub-rotas (resumo, offline) | 40min |
+| 7 | Middleware: protegendo API com `x-api-key` | 30min |
+| 8 | Variáveis de ambiente (`.env.local`) | 10min |
+| 9 | **Projeto Prático:** Dashboard migrado + PainelAPI + FormServidor | 30min |
 
 📄 [Material completo da Aula 02](./aulas/aula-02-nextjs-app-router.md)
 
 ---
 
-### Aula 03 — Estilização, Integração com API e Deploy
+### Aula 03 — Estilização com Tailwind CSS, Integração com API Externa e Deploy
 
 | # | Tópico | Duração |
 |---|--------|---------|
@@ -87,7 +89,11 @@ Ao longo das 3 aulas, construímos um **Dashboard de Monitoramento de Servidores
 - ✅ Interface dark mode profissional
 - ✅ Migração para Next.js com App Router (Aula 02)
 - ✅ Rotas dinâmicas por servidor (Aula 02)
-- ✅ API Routes com dados do backend (Aula 02)
+- ✅ API Routes com GET, POST e sub-rotas (Aula 02)
+- ✅ Middleware de autenticação por header `x-api-key` (Aula 02)
+- ✅ Variáveis de ambiente com `.env.local` (Aula 02)
+- ✅ PainelAPI consumindo endpoints com autenticação (Aula 02)
+- ✅ Formulário POST para adicionar servidores (Aula 02)
 - 🔲 Estilização com Tailwind CSS (Aula 03)
 - 🔲 Integração com API Laravel (Aula 03)
 - 🔲 Deploy na Vercel (Aula 03)
@@ -110,8 +116,28 @@ npm run dev
 ```bash
 cd next-dashboard
 npm install
+
+# Criar arquivo de variáveis de ambiente
+echo 'API_KEY=flexxo-2026-segura' > .env.local
+echo 'NEXT_PUBLIC_API_KEY=flexxo-2026-segura' >> .env.local
+
 npm run dev
 # Acesse: http://localhost:3000
+```
+
+### Testando a API com autenticação
+
+```bash
+# ❌ Sem chave (deve bloquear com 401)
+curl http://localhost:3000/api/servidores
+
+# ✅ Com chave válida
+curl -H "x-api-key: flexxo-2026-segura" http://localhost:3000/api/servidores
+
+# ✅ Endpoints disponíveis
+curl -H "x-api-key: flexxo-2026-segura" http://localhost:3000/api/servidores/resumo
+curl -H "x-api-key: flexxo-2026-segura" http://localhost:3000/api/servidores/offline
+curl -H "x-api-key: flexxo-2026-segura" http://localhost:3000/api/servidores/1
 ```
 
 ---
@@ -142,16 +168,27 @@ flexxo-react-next-js/
 │   │       └── OrderCpu.jsx
 │   └── package.json
 └── next-dashboard/                     ← Projeto Aula 02+ (Next.js)
+    ├── middleware.js                    ← 🛡️ Middleware de autenticação
+    ├── .env.local                      ← Variáveis de ambiente
     ├── app/
     │   ├── layout.jsx
     │   ├── page.jsx
     │   ├── globals.css
+    │   ├── sobre/
+    │   │   └── page.jsx
     │   ├── servidor/
     │   │   └── [id]/
-    │   │       └── page.jsx
+    │   │       ├── page.jsx
+    │   │       └── loading.jsx
     │   └── api/
     │       └── servidores/
-    │           └── route.js
+    │           ├── route.js            ← GET + POST /api/servidores
+    │           ├── resumo/
+    │           │   └── route.js        ← GET /api/servidores/resumo
+    │           ├── offline/
+    │           │   └── route.js        ← GET /api/servidores/offline
+    │           └── [id]/
+    │               └── route.js        ← GET /api/servidores/:id
     ├── components/
     │   ├── Header.jsx
     │   ├── Footer.jsx
@@ -159,7 +196,10 @@ flexxo-react-next-js/
     │   ├── StatusFilter.jsx
     │   ├── SearchBar.jsx
     │   ├── ServerCard.jsx
-    │   └── OrderCpu.jsx
+    │   ├── OrderCpu.jsx
+    │   ├── DashboardClient.jsx
+    │   ├── PainelAPI.jsx               ← Consome API com autenticação
+    │   └── FormServidor.jsx            ← Formulário POST
     ├── data/
     │   └── servidores.js
     └── package.json
